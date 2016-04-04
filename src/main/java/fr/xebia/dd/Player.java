@@ -1,7 +1,9 @@
 package fr.xebia.dd;
 
 import java.util.List;
+import java.util.stream.Collector;
 
+import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonList;
 
 class Player {
@@ -75,32 +77,7 @@ class Player {
         }).sum();
 
         while (sum > 9) {
-            sum = Integer.toString(sum).chars().map(c -> {
-                switch (c) {
-                    case '0':
-                        return 0;
-                    case '1':
-                        return 1;
-                    case '2':
-                        return 2;
-                    case '3':
-                        return 3;
-                    case '4':
-                        return 4;
-                    case '5':
-                        return 5;
-                    case '6':
-                        return 6;
-                    case '7':
-                        return 7;
-                    case '8':
-                        return 8;
-                    case '9':
-                        return 9;
-                    default:
-                        throw new IllegalArgumentException();
-                }
-            }).sum();
+            sum = Integer.toString(sum).chars().map(c -> parseInt(Character.toString((char) c))).sum();
         }
 
         switch (sum) {
