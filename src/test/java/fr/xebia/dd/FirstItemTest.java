@@ -12,7 +12,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Parameterized.class)
-public class DungeonTest {
+public class FirstItemTest {
 
     @Parameters(name = "{1} should have {0}")
     public static Iterable<String[]> itemForPlayers() {
