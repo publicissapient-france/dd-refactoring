@@ -1,7 +1,6 @@
 package fr.xebia.dd;
 
 import java.util.List;
-import java.util.stream.Collector;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonList;
