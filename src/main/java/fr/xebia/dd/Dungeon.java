@@ -1,11 +1,10 @@
 package fr.xebia.dd;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
+import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 class Dungeon {
@@ -14,6 +13,9 @@ class Dungeon {
     private int playerX;
     private int playerY;
     private boolean gameOver = false;
+    private Integer monsterX;
+    private Integer monsterY;
+    private Random random;
 
     private final int width;
     private final int height;
@@ -21,13 +23,13 @@ class Dungeon {
     private final int exitPosition;
     private final List<Consumer<String>> eventConsumers;
 
-    private static String findLine(String[] lines, char c) {
+    private static Optional<String> findLine(String[] lines, char c) {
         for (String line : lines) {
             if (line.indexOf(c) != -1) {
-                return line;
+                return Optional.of(line);
             }
         }
-        throw new IllegalArgumentException();
+        return empty();
     }
 
     private static int findY(String[] lines, char c) {
@@ -60,18 +62,19 @@ class Dungeon {
     }
 
     private Dungeon(String[] lines) {
-        this(lines, computeDirection(findLine(lines, 'E').indexOf('E'), findY(lines, 'E'), lines[0].length() - 2, lines.length - 2));
+        this(lines, computeDirection(findLine(lines, 'E').map(lineWithExit -> lineWithExit.indexOf('E')).orElse(null), findY(lines, 'E'), lines[0].length() - 2, lines.length - 2));
     }
 
     private Dungeon(String[] lines, String exitDirection) {
         this(
                 lines[0].length() - 2,
                 lines.length - 2,
-                findLine(lines, 'P').indexOf('P') - 1,
+                findLine(lines, 'P').orElseThrow(IllegalArgumentException::new).indexOf('P') - 1,
                 findY(lines, 'P') - 1,
                 exitDirection,
-                findPosition(exitDirection, findLine(lines, 'E').indexOf('E'), findY(lines, 'E'))
+                findPosition(exitDirection, findLine(lines, 'E').map(linewWithPlayer -> linewWithPlayer.indexOf('E')).orElseThrow(IllegalArgumentException::new), findY(lines, 'E'))
         );
+        findLine(lines, 'M').ifPresent(lineWithMonster -> addMonster(lineWithMonster.indexOf('M') - 1, findY(lines, 'M') - 1));
     }
 
     private Dungeon(int width, int height, int playerX, int playerY, String exitDirection, int exitPosition) {
@@ -82,6 +85,18 @@ class Dungeon {
         this.exitDirection = exitDirection;
         this.exitPosition = exitPosition;
         this.eventConsumers = new ArrayList<>();
+        this.random = new Random();
+    }
+
+    private Dungeon addMonster(int monsterX, int monsterY) {
+        this.monsterX = monsterX;
+        this.monsterY = monsterY;
+        return this;
+    }
+
+    Dungeon withRandom(Random random) {
+        this.random = random;
+        return this;
     }
 
     Optional<Player> player() {
@@ -138,6 +153,17 @@ class Dungeon {
         if (playerIsNotStuckToWall.getAsBoolean() || gameOver) {
             updateCoordinate.run();
             eventConsumers.forEach(consumer -> consumer.accept("Player moved " + direction));
+        }
+        if (!gameOver) {
+            if (Objects.equals(playerX, monsterX) && Objects.equals(playerY, monsterY)) {
+                eventConsumers.forEach(consumer -> consumer.accept("Player fought against monster"));
+                if (random.nextBoolean()) {
+                    eventConsumers.forEach(consumer -> consumer.accept("Monster killed player"));
+                    gameOver = true;
+                } else {
+                    eventConsumers.forEach(consumer -> consumer.accept("Player killed monster"));
+                }
+            }
         }
         if (gameOver) {
             eventConsumers.forEach(consumer -> consumer.accept("Game is over"));
