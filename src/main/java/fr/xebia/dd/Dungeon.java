@@ -21,7 +21,60 @@ class Dungeon {
     private final int exitPosition;
     private final List<Consumer<String>> eventConsumers;
 
-    Dungeon(int width, int height, int playerX, int playerY, String exitDirection, int exitPosition) {
+    private static String findLine(String[] lines, char c) {
+        for (String line : lines) {
+            if (line.indexOf(c) != -1) {
+                return line;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private static int findY(String[] lines, char c) {
+        for (int y = 0; y < lines.length; y++) {
+            if (lines[y].indexOf(c) != -1) {
+                return y;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private static String computeDirection(int exitX, int exitY, int width, int height) {
+        if (exitX == 0         ) return "east";
+        if (exitX == width + 1 ) return "west";
+        if (exitY == 0         ) return "north";
+        if (exitY == height + 1) return "south";
+        throw new IllegalArgumentException();
+    }
+
+    private static int findPosition(String direction, int exitX, int exitY) {
+        switch (direction) {
+            case "north": case "south": return exitX - 1;
+            case "east" : case "west" : return exitY - 1;
+            default: throw new IllegalArgumentException();
+        }
+    }
+
+    Dungeon(String asciiArt) {
+        this(asciiArt.split("\n"));
+    }
+
+    private Dungeon(String[] lines) {
+        this(lines, computeDirection(findLine(lines, 'E').indexOf('E'), findY(lines, 'E'), lines[0].length() - 2, lines.length - 2));
+    }
+
+    private Dungeon(String[] lines, String exitDirection) {
+        this(
+                lines[0].length() - 2,
+                lines.length - 2,
+                findLine(lines, 'P').indexOf('P') - 1,
+                findY(lines, 'P') - 1,
+                exitDirection,
+                findPosition(exitDirection, findLine(lines, 'E').indexOf('E'), findY(lines, 'E'))
+        );
+    }
+
+    private Dungeon(int width, int height, int playerX, int playerY, String exitDirection, int exitPosition) {
         this.width = width;
         this.height = height;
         this.playerX = playerX;

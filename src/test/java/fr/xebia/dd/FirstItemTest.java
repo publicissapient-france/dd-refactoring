@@ -9,7 +9,6 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.List;
 
-import static fr.xebia.dd.DungeonFactory.createDungeon;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Parameterized.class)
@@ -49,7 +48,7 @@ public class FirstItemTest {
 
     @Test
     public void should_give_an_item_when_player_is_created() {
-        Player player = createDungeon("" +
+        Player player = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
                 "###").createPlayer(playerName).player().orElseThrow(AssertionError::new);

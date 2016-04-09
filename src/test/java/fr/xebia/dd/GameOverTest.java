@@ -5,15 +5,14 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fr.xebia.dd.DungeonFactory.createDungeon;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DungeonTest {
+public class GameOverTest {
 
     @Test
     public void should_end_game_north() {
         List<String> events = new ArrayList<>();
-        Dungeon dungeon = createDungeon("" +
+        Dungeon dungeon = new Dungeon("" +
                 "#E#\n" +
                 "#P#\n" +
                 "###"
@@ -28,7 +27,7 @@ public class DungeonTest {
     @Test
     public void should_end_game_south() {
         List<String> events = new ArrayList<>();
-        Dungeon dungeon = createDungeon("" +
+        Dungeon dungeon = new Dungeon("" +
                 "###\n" +
                 "#P#\n" +
                 "#E#"
@@ -43,7 +42,7 @@ public class DungeonTest {
     @Test
     public void should_end_game_east() {
         List<String> events = new ArrayList<>();
-        Dungeon dungeon = createDungeon("" +
+        Dungeon dungeon = new Dungeon("" +
                 "###\n" +
                 "#PE\n" +
                 "###"
@@ -58,7 +57,7 @@ public class DungeonTest {
     @Test
     public void should_end_game_west() {
         List<String> events = new ArrayList<>();
-        Dungeon dungeon = createDungeon("" +
+        Dungeon dungeon = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
                 "###"
@@ -73,7 +72,7 @@ public class DungeonTest {
     @Test
     public void should_not_move_when_player_is_stuck_to_the_wall() {
         List<String> events = new ArrayList<>();
-        Dungeon dungeon = createDungeon("" +
+        Dungeon dungeon = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
                 "###"
@@ -87,7 +86,7 @@ public class DungeonTest {
     @Test
     public void should_not_move_when_game_is_over() {
         List<String> events = new ArrayList<>();
-        Dungeon dungeon = createDungeon("" +
+        Dungeon dungeon = new Dungeon("" +
                 "#E#\n" +
                 "#P#\n" +
                 "###"
@@ -102,7 +101,7 @@ public class DungeonTest {
     @Test
     public void should_works_with_big_dungeon() {
         List<String> events = new ArrayList<>();
-        Dungeon dungeon = createDungeon("" +
+        Dungeon dungeon = new Dungeon("" +
                 "###########\n" +
                 "#         #\n" +
                 "#       P #\n" +
