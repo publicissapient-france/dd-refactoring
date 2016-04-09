@@ -1,8 +1,9 @@
 package fr.xebia.dd;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
 
 import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
@@ -21,7 +22,6 @@ class Dungeon {
     private final int height;
     private final String exitDirection;
     private final int exitPosition;
-    private final List<Consumer<String>> eventConsumers;
 
     private static Optional<String> findLine(String[] lines, char c) {
         for (String line : lines) {
@@ -84,7 +84,6 @@ class Dungeon {
         this.playerY = playerY;
         this.exitDirection = exitDirection;
         this.exitPosition = exitPosition;
-        this.eventConsumers = new ArrayList<>();
         this.random = new Random();
     }
 
@@ -101,11 +100,6 @@ class Dungeon {
 
     Optional<Player> player() {
         return ofNullable(player);
-    }
-
-    Dungeon subscribe(Consumer<String> eventConsumer) {
-        eventConsumers.add(eventConsumer);
-        return this;
     }
 
     Dungeon createPlayer(String name) {
@@ -152,21 +146,21 @@ class Dungeon {
         gameOver = playerIsInFrontOfExit.getAsBoolean();
         if (playerIsNotStuckToWall.getAsBoolean() || gameOver) {
             updateCoordinate.run();
-            eventConsumers.forEach(consumer -> consumer.accept("Player moved " + direction));
+            System.out.println("Player moved " + direction);
         }
         if (!gameOver) {
             if (Objects.equals(playerX, monsterX) && Objects.equals(playerY, monsterY)) {
-                eventConsumers.forEach(consumer -> consumer.accept("Player fought against monster"));
+                System.out.println("Player fought against monster");
                 if (random.nextBoolean()) {
-                    eventConsumers.forEach(consumer -> consumer.accept("Monster killed player"));
+                    System.out.println("Monster killed player");
                     gameOver = true;
                 } else {
-                    eventConsumers.forEach(consumer -> consumer.accept("Player killed monster"));
+                    System.out.println("Player killed monster");
                 }
             }
         }
         if (gameOver) {
-            eventConsumers.forEach(consumer -> consumer.accept("Game is over"));
+            System.out.println("Game is over");
         }
         return this;
     }
