@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.BooleanSupplier;
 
-import static java.util.Optional.empty;
 import static java.util.Optional.ofNullable;
 
 class Dungeon {
@@ -17,33 +16,15 @@ class Dungeon {
     private Integer monsterX;
     private Integer monsterY;
     private Random random;
+    private String exitDirection;
+    private int exitPosition;
 
     private final int width;
     private final int height;
-    private final String exitDirection;
-    private final int exitPosition;
-
-    private static Optional<String> findLine(String[] lines, char c) {
-        for (String line : lines) {
-            if (line.indexOf(c) != -1) {
-                return Optional.of(line);
-            }
-        }
-        return empty();
-    }
-
-    private static int findY(String[] lines, char c) {
-        for (int y = 0; y < lines.length; y++) {
-            if (lines[y].indexOf(c) != -1) {
-                return y;
-            }
-        }
-        throw new IllegalArgumentException();
-    }
 
     private static String computeDirection(int exitX, int exitY, int width, int height) {
-        if (exitX == 0         ) return "east";
-        if (exitX == width + 1 ) return "west";
+        if (exitX == 0         ) return "west";
+        if (exitX == width + 1 ) return "east";
         if (exitY == 0         ) return "north";
         if (exitY == height + 1) return "south";
         throw new IllegalArgumentException();
@@ -58,39 +39,26 @@ class Dungeon {
     }
 
     Dungeon(String asciiArt) {
-        this(asciiArt.split("\n"));
-    }
-
-    private Dungeon(String[] lines) {
-        this(lines, computeDirection(findLine(lines, 'E').map(lineWithExit -> lineWithExit.indexOf('E')).orElse(null), findY(lines, 'E'), lines[0].length() - 2, lines.length - 2));
-    }
-
-    private Dungeon(String[] lines, String exitDirection) {
-        this(
-                lines[0].length() - 2,
-                lines.length - 2,
-                findLine(lines, 'P').orElseThrow(IllegalArgumentException::new).indexOf('P') - 1,
-                findY(lines, 'P') - 1,
-                exitDirection,
-                findPosition(exitDirection, findLine(lines, 'E').map(linewWithPlayer -> linewWithPlayer.indexOf('E')).orElseThrow(IllegalArgumentException::new), findY(lines, 'E'))
-        );
-        findLine(lines, 'M').ifPresent(lineWithMonster -> addMonster(lineWithMonster.indexOf('M') - 1, findY(lines, 'M') - 1));
-    }
-
-    private Dungeon(int width, int height, int playerX, int playerY, String exitDirection, int exitPosition) {
-        this.width = width;
-        this.height = height;
-        this.playerX = playerX;
-        this.playerY = playerY;
-        this.exitDirection = exitDirection;
-        this.exitPosition = exitPosition;
-        this.random = new Random();
-    }
-
-    private Dungeon addMonster(int monsterX, int monsterY) {
-        this.monsterX = monsterX;
-        this.monsterY = monsterY;
-        return this;
+        String[] lines = asciiArt.split("\n");
+        this.height = lines.length - 2;
+        this.width = lines[0].length() - 2;
+        for (int y = 0; y < lines.length; y++) {
+            char[] chars = lines[y].toCharArray();
+            for (int x = 0; x < chars.length; x++) {
+                if (chars[x] == 'P') {
+                    this.playerX = x - 1;
+                    this.playerY = y - 1;
+                }
+                if (chars[x] == 'E') {
+                    this.exitDirection = computeDirection(x, y, width, height);
+                    this.exitPosition = findPosition(exitDirection, x, y);
+                }
+                if (chars[x] == 'M') {
+                    this.monsterX = x - 1;
+                    this.monsterY = y - 1;
+                }
+            }
+        }
     }
 
     Dungeon withRandom(Random random) {
@@ -117,20 +85,20 @@ class Dungeon {
     Dungeon left() {
         return move("left",
                 () -> playerX > 0,
-                () -> playerX == 0 && "east".equals(exitDirection) && playerY == exitPosition,
+                () -> playerX == 0 && "west".equals(exitDirection) && playerY == exitPosition,
                 () -> playerX--);
     }
 
     Dungeon right() {
         return move("right",
                 () -> playerX < width - 1,
-                () -> playerX == width - 1 && "west".equals(exitDirection) && exitPosition == playerY,
+                () -> playerX == width - 1 && "east".equals(exitDirection) && exitPosition == playerY,
                 () -> playerX++);
     }
 
     Dungeon down() {
         return move("down",
-                () -> playerY < height - 1,
+                () -> playerY < height,
                 () -> playerY == height - 1 && "south".equals(exitDirection) && playerX == exitPosition,
                 () -> playerY++);
     }
