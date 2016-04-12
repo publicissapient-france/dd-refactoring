@@ -10,14 +10,16 @@ public class GameOverTest {
 
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
+    private Dungeon dungeon;
 
     @Test
     public void should_end_game_north() {
-        Dungeon dungeon = new Dungeon("" +
+        dungeon =  new Dungeon("" +
                 "#E#\n" +
                 "#P#\n" +
                 "###"
-        ).createPlayer("player");
+        );
+        createPlayer("player");
 
         dungeon.up();
 
@@ -27,11 +29,12 @@ public class GameOverTest {
 
     @Test
     public void should_end_game_south() {
-        Dungeon dungeon = new Dungeon("" +
+        dungeon = new Dungeon("" +
                 "###\n" +
                 "#P#\n" +
                 "#E#"
-        ).createPlayer("player");
+        );
+        createPlayer("player");
 
         dungeon.down();
 
@@ -39,13 +42,15 @@ public class GameOverTest {
         assertThat(systemOutRule.getLog().split("\n")).containsExactly("Player moved down", "Game is over");
     }
 
+
     @Test
     public void should_end_game_east() {
-        Dungeon dungeon = new Dungeon("" +
+        dungeon = new Dungeon("" +
                 "###\n" +
                 "#PE\n" +
                 "###"
-        ).createPlayer("player");
+        );
+        createPlayer("player");
 
         dungeon.right();
 
@@ -55,11 +60,12 @@ public class GameOverTest {
 
     @Test
     public void should_end_game_west() {
-        Dungeon dungeon = new Dungeon("" +
+        dungeon = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
                 "###"
-        ).createPlayer("player");
+        );
+        createPlayer("player");
 
         dungeon.left();
 
@@ -69,11 +75,12 @@ public class GameOverTest {
 
     @Test
     public void should_not_move_when_player_is_stuck_to_the_wall() {
-        Dungeon dungeon = new Dungeon("" +
+        dungeon = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
                 "###"
-        ).createPlayer("player");
+        );
+        createPlayer("player");
 
         dungeon.up();
 
@@ -82,11 +89,13 @@ public class GameOverTest {
 
     @Test
     public void should_not_move_when_game_is_over() {
-        Dungeon dungeon = new Dungeon("" +
+        dungeon = new Dungeon("" +
                 "#E#\n" +
                 "#P#\n" +
                 "###"
-        ).createPlayer("player").up();
+        );
+        createPlayer("player");
+        dungeon.up();
 
         dungeon.up();
 
@@ -96,7 +105,7 @@ public class GameOverTest {
 
     @Test
     public void should_works_with_big_dungeon() {
-        Dungeon dungeon = new Dungeon("" +
+        dungeon = new Dungeon("" +
                 "###########\n" +
                 "#         #\n" +
                 "#       P #\n" +
@@ -104,7 +113,8 @@ public class GameOverTest {
                 "E         #\n" +
                 "#         #\n" +
                 "###########"
-        ).createPlayer("player");
+        );
+        createPlayer("player");
 
         dungeon
                 .up()
@@ -123,6 +133,10 @@ public class GameOverTest {
                 "Player moved down",
                 "Player moved left",
                 "Game is over");
+    }
+
+    private void createPlayer(String player) {
+        this.dungeon.createPlayer(player, 10, 10);
     }
 
 }

@@ -12,15 +12,16 @@ class Dungeon {
     private Player player;
     private int playerX;
     private int playerY;
-    private boolean gameOver = false;
     private Integer monsterX;
     private Integer monsterY;
-    private Random random;
+    private final Random random = new Random(3230);
     private String exitDirection;
     private int exitPosition;
 
     private final int width;
     private final int height;
+    private int monsterForce;
+    private int monsterHealth;
 
     private static String computeDirection(int exitX, int exitY, int width, int height) {
         if (exitX == 0         ) return "west";
@@ -39,6 +40,8 @@ class Dungeon {
     }
 
     Dungeon(String asciiArt) {
+        int randomized = random.nextInt(984);
+        randomized += randomized + 1;
         String[] lines = asciiArt.split("\n");
         this.height = lines.length - 2;
         this.width = lines[0].length() - 2;
@@ -61,18 +64,8 @@ class Dungeon {
         }
     }
 
-    Dungeon withRandom(Random random) {
-        this.random = random;
-        return this;
-    }
-
     Optional<Player> player() {
         return ofNullable(player);
-    }
-
-    Dungeon createPlayer(String name) {
-        this.player = new Player(name);
-        return this;
     }
 
     Dungeon up() {
@@ -118,12 +111,25 @@ class Dungeon {
         }
         if (!gameOver) {
             if (Objects.equals(playerX, monsterX) && Objects.equals(playerY, monsterY)) {
-                System.out.println("Player fought against monster");
-                if (random.nextBoolean()) {
+                System.out.println("Player fight against monster");
+                while (monsterHealth > 0 && player.getHealth() > 0 && player.getHealth() > -4) {
+                    monsterHealth = monsterHealth - player.getForce() - player.items().iterator().next().getDamage();
+                    System.out.format("Player hit monster with %s damage.%n", player.items().get(0).getDamage() + player.getForce());
+                    if (monsterHealth <= 0) break;
+                    System.out.println("Monster survives and got " + monsterHealth + " hp");
+                    int oldHealthPlayer = retrieveCurrentHealth(player);
+                    player.setHealth(oldHealthPlayer - monsterForce);
+                    int newPl_Healty = player.getHealth();
+                    System.out.println("Monster hits Player with " + (oldHealthPlayer - newPl_Healty) + " damage.");
+                }
+                if (player.getHealth() <= 0) {
                     System.out.println("Monster killed player");
                     gameOver = true;
-                } else {
-                    System.out.println("Player killed monster");
+                }
+                else
+                if (player.getHealth() > 0)
+                {
+                    System.out.println(player + "  killed monster ");
                 }
             }
         }
@@ -132,5 +138,76 @@ class Dungeon {
         }
         return this;
     }
+
+    private static final int retrieveCurrentHealth(Player player) {
+        return player.getHealth();
+    }
+
+    public static void main(String[] args) {
+        Dungeon dungeon = new Dungeon("" +
+                "###########\n" +
+                "#         #\n" +
+                "#       P #\n" +
+                "#  M      #\n" +
+                "E         #\n" +
+                "#         #\n" +
+                "###########"
+        ).createPlayer("player", 10, 30).withMonster(2, 20);
+
+        dungeon
+                .up()
+                .up() // can't goes up
+                .right().down().left().down()
+                .left().left().left().left().left().left().left()
+                .left() // can't goes left
+                .down()
+                .left(); // exit
+    }
+
+    Dungeon createPlayer(String name, int force, int health) {
+        this.player = new Player(name, force, health);
+        return this;
+    }
+
+    Dungeon createPlayer(String playerName, int force, int health, Item item) {
+        this.player = new Player(playerName, force, health, item);
+        return this;
+    }
+
+    Dungeon withMonster(int monsterForce, int monsterHealth) {
+        this.monsterForce = monsterForce;
+        this.monsterHealth = monsterHealth;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder out = new StringBuilder();
+        for (int y = -1; y < height + 1; y++) {
+            for (int x = -1; x < width + 1; x++) {
+                if (x == -1 || x == width || y == -1 || y == height) {
+                    String currentDirection = computeDirection(x + 1, y + 1, width, height);
+                    int currentPosition = findPosition(currentDirection, x, y) + 1;
+                    if (exitDirection.equals(currentDirection) && currentPosition == exitPosition) {
+                        out.append('E');
+                    } else {
+                        out.append('#');
+                    }
+                } else if (x == playerX && y == playerY) {
+                    out.append('P');
+                } else if (monsterX != null && x == monsterX && monsterY != null && y == monsterY) {
+                    out.append('M');
+                } else {
+                    out.append(' ');
+                }
+            }
+            if (y < height) {
+                out.append('\n');
+            }
+        }
+        return out.toString();
+    }
+
+    private boolean gameOver = false;
 
 }

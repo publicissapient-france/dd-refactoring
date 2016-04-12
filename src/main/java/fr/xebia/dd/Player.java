@@ -1,5 +1,7 @@
 package fr.xebia.dd;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -8,13 +10,29 @@ import static java.util.Collections.singletonList;
 class Player {
 
     private final String name;
+    private int force;
+    private int health;
+    private Item item;
 
-    Player(String name) {
+    Player(String playerName, int force, int health, Item item) {
+        this.name = playerName;
+        this.force = force;
+        this.health = health;
+        this.item = item;
+    }
+
+    Player(String name, int force, int health) {
         this.name = name;
+        this.force = force;
+        this.health = health;
+        this.item = nameToItem();
     }
 
     List<Item> items() {
-        return singletonList(nameToItem());
+        if (item == null) {
+            return singletonList(nameToItem());
+        }
+        return Arrays.asList(item);
     }
 
     private Item nameToItem() {
@@ -53,4 +71,20 @@ class Player {
         }
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public int getForce() {
+        return force;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

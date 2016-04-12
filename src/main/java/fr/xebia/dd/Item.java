@@ -5,9 +5,16 @@ import java.util.Objects;
 class Item {
 
     private final String name;
+    private int damage;
 
     Item(String name) {
         this.name = name;
+        this.damage = 1;
+    }
+
+    Item(String name, int damage) {
+        this.name = name;
+        this.damage = damage;
     }
 
     @Override
@@ -23,4 +30,7 @@ class Item {
         return Objects.hash(name);
     }
 
+    int getDamage() {
+        return damage;
+    }
 }

@@ -51,7 +51,7 @@ public class FirstItemTest {
         Player player = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
-                "###").createPlayer(playerName).player().orElseThrow(AssertionError::new);
+                "###").createPlayer(playerName, 10, 20).player().orElseThrow(AssertionError::new);
 
         List<Item> items = player.items();
 

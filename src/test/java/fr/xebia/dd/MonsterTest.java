@@ -17,18 +17,23 @@ public class MonsterTest {
 
     @Test
     public void should_fight_with_monster_and_be_killed() {
-        Random mock = mock(Random.class);
-        given(mock.nextBoolean()).willReturn(true);
         Dungeon dungeon = new Dungeon("" +
                 "####\n" +
                 "#MP#\n" +
                 "#E##"
-        ).withRandom(mock).createPlayer("player");
+        ).createPlayer("player", 10, 20, new Item("an item", 5)).withMonster(20, 20);
 
         dungeon.left();
 
         assertThat(dungeon.isGameOver()).isTrue();
-        assertThat(systemOutRule.getLog().split("\n")).containsExactly("Player moved left", "Player fought against monster", "Monster killed player", "Game is over");
+        assertThat(systemOutRule.getLog().split("\n")).containsExactly(
+                "Player moved left",
+                "Player fight against monster",
+                "Player hit monster with 15 damage.",
+                "Monster survives and got 5 hp",
+                "Monster hits Player with 20 damage.",
+                "Monster killed player",
+                "Game is over");
     }
 
     @Test
@@ -39,11 +44,17 @@ public class MonsterTest {
                 "#E##\n" +
                 "#PM#\n" +
                 "####"
-        ).withRandom(mock).createPlayer("player");
+        ).createPlayer("grooooot", 8, 20, new Item("other item", 5)).withMonster(20, 10);
 
         dungeon.right();
 
-        assertThat(systemOutRule.getLog().split("\n")).containsExactly("Player moved right", "Player fought against monster", "Player killed monster");
+        assertThat(dungeon.isGameOver()).isFalse();
+        assertThat(systemOutRule.getLog().split("\n")).containsExactly(
+                "Player moved right",
+                "Player fight against monster",
+                "Player hit monster with 13 damage.",
+                "grooooot  killed monster "
+        );
     }
 
 }
