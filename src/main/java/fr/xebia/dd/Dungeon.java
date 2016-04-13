@@ -130,6 +130,7 @@ class Dungeon {
                 if (player.getHealth() > 0)
                 {
                     System.out.println(player + "  killed monster ");
+                    monsterX = null;
                 }
             }
         }

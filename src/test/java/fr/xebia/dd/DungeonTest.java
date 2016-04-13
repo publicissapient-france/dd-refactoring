@@ -30,6 +30,22 @@ public class DungeonTest {
     }
 
     @Test
+    public void should_disappear_monster_when_dies() {
+        Dungeon dungeon = new Dungeon("" +
+                "#####\n" +
+                "# MP#\n" +
+                "#E###"
+        ).createPlayer("grooooot", 8, 20, new Item("other item", 5)).withMonster(20, 10);
+
+        String displayedDungeon = dungeon.left().right().toString();
+
+        assertThat(displayedDungeon).isEqualTo("" +
+                "#####\n" +
+                "#  P#\n" +
+                "#E###");
+    }
+
+    @Test
     public void should_display_north_dungeon() {
         Dungeon dungeon = new Dungeon("" +
                 "#E#\n" +
