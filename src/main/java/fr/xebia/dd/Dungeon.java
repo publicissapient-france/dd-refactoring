@@ -194,7 +194,7 @@ class Dungeon {
                     } else {
                         out.append('#');
                     }
-                } else if (x == playerX && y == playerY) {
+                } else if (x == playerX && y == playerY && player != null && player.getHealth() > 0) {
                     out.append('P');
                 } else if (monsterX != null && x == monsterX && monsterY != null && y == monsterY) {
                     out.append('M');

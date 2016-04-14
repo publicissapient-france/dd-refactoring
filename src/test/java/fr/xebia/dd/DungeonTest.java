@@ -15,7 +15,7 @@ public class DungeonTest {
                 "         P  #\n" +
                 "#           #\n" +
                 "#           #\n" +
-                "#######  E###");
+                "#######  E###").createPlayer("name", 0, 1);
 
         String displayedDungeon = dungeon.toString();
 
@@ -46,11 +46,28 @@ public class DungeonTest {
     }
 
     @Test
+    public void should_disappear_player_when_it_dies() {
+        Dungeon dungeon = new Dungeon("" +
+                "####\n" +
+                "#MP#\n" +
+                "#E##"
+        ).createPlayer("player", 10, 20, new Item("an item", 5)).withMonster(20, 20);
+
+        String displayedDungeon = dungeon.left().toString();
+
+        assertThat(displayedDungeon).isEqualTo("" +
+                "####\n" +
+                "#M #\n" +
+                "#E##");
+    }
+
+
+    @Test
     public void should_display_north_dungeon() {
         Dungeon dungeon = new Dungeon("" +
                 "#E#\n" +
                 "#P#\n" +
-                "###");
+                "###").createPlayer("name", 0, 1);
 
         String displayedDungeon = dungeon.toString();
 
@@ -65,7 +82,7 @@ public class DungeonTest {
         Dungeon dungeon = new Dungeon("" +
                 "###\n" +
                 "#PE\n" +
-                "###");
+                "###").createPlayer("name", 0, 1);
 
         String displayedDungeon = dungeon.toString();
 
@@ -80,7 +97,7 @@ public class DungeonTest {
         Dungeon dungeon = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
-                "###");
+                "###").createPlayer("name", 0, 1);
 
         String displayedDungeon = dungeon.toString();
 
