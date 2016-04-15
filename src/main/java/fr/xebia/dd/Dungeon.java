@@ -1,8 +1,6 @@
 package fr.xebia.dd;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -147,69 +145,59 @@ class Dungeon {
         return player.getHealth();
     }
 
+    static String play(String asciiArt, Random random) {
+        PrintStream systemOut = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        StringBuilder playerName = new StringBuilder();
+        final String possibleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!?-&";
+        for (int i = 0; i < random.nextInt(10) + 5; i++) {
+            playerName.append(possibleCharacters.charAt(random.nextInt(possibleCharacters.length())));
+        }
+        Dungeon dungeon = new Dungeon(asciiArt)
+                .createPlayer(playerName.toString(), random.nextInt(20) + 1, random.nextInt(40) + 1)
+                .withMonster(random.nextInt(10) + 1, random.nextInt(30) + 1);
+
+        System.out.println(dungeon);
+
+        while (!dungeon.gameOver) {
+            switch (random.nextInt(4)) {
+                case 0: dungeon.up(); break;
+                case 1: dungeon.down(); break;
+                case 2: dungeon.left(); break;
+                case 3: dungeon.right();
+            }
+        }
+
+        System.out.println(dungeon);
+
+        System.setOut(systemOut);
+
+        return out.toString();
+    }
+
     public static void main(String[] args) {
         Random random = new Random();
         StringBuilder asciiArt = new StringBuilder();
-        if (args.length == 0) {
-            asciiArt.append("" +
-                    "###########\n" +
-                    "#         #\n" +
-                    "#       P #\n" +
-                    "#  M      #\n" +
-                    "E         #\n" +
-                    "#         #\n" +
-                    "###########");
-        } else {
-            System.out.print("seed - nothing for pure random> ");
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
-                String currentLine = in.readLine();
-                if (currentLine == null) {
-                    System.exit(2);
-                }
-                try {
-                    random.setSeed(Long.parseLong(currentLine));
-                } catch (NumberFormatException ignored) {
-                }
-                System.out.println("dungeon as ascii art:");
-                while ((currentLine = in.readLine()) != null) {
-                    asciiArt.append(currentLine).append('\n');
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1);
+        System.out.print("seed - nothing for pure random> ");
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
+            String currentLine = in.readLine();
+            if (currentLine == null) {
+                System.exit(2);
             }
-        }
-        Dungeon dungeon = new Dungeon(asciiArt.toString());
-        if (args.length == 0) {
-            dungeon.createPlayer("player", 10, 30).withMonster(2, 20);
-        } else {
-            dungeon.createPlayer("player", random.nextInt(20) + 1, random.nextInt(40) + 1)
-                    .withMonster(random.nextInt(10) + 1, random.nextInt(30) + 1);
-        }
-
-        System.out.println(dungeon);
-
-        if (args.length > 0) {
-            while (!dungeon.gameOver) {
-                switch (random.nextInt(4)) {
-                    case 0: dungeon.up(); break;
-                    case 1: dungeon.down(); break;
-                    case 2: dungeon.left(); break;
-                    case 3: dungeon.right();
-                }
+            try {
+                random.setSeed(Long.parseLong(currentLine));
+            } catch (NumberFormatException ignored) {
             }
-        } else {
-            dungeon
-                    .up()
-                    .up() // can't goes up
-                    .right().down().left().down()
-                    .left().left().left().left().left().left().left()
-                    .left() // can't goes left
-                    .down()
-                    .left(); // exit
+            System.out.println("dungeon as ascii art:");
+            while ((currentLine = in.readLine()) != null) {
+                asciiArt.append(currentLine).append('\n');
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
-
-        System.out.println(dungeon);
+        System.out.println(play(asciiArt.toString(), random));
     }
 
     Dungeon createPlayer(String name, int force, int health) {
