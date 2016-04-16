@@ -1,16 +1,14 @@
 package fr.xebia.dd;
 
 import java.io.*;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.function.BooleanSupplier;
 
-import static java.util.Optional.ofNullable;
+import static java.lang.Integer.parseInt;
+import static java.util.Collections.singletonList;
 
 class Dungeon {
 
-    private Player player;
     private int playerX;
     private int playerY;
     private Integer monsterX;
@@ -23,6 +21,16 @@ class Dungeon {
     private final int height;
     private int monsterForce;
     private int monsterHealth;
+
+    private int player_health;
+
+    private int playerStrength;
+
+    private List<Item> playerItems;
+
+
+
+    private String name_secret;
 
     private static String computeDirection(int exitX, int exitY, int width, int height) {
         if (exitX == 0         ) return "west";
@@ -65,8 +73,8 @@ class Dungeon {
         }
     }
 
-    Optional<Player> player() {
-        return ofNullable(player);
+    List<Item> itemsOfThePlayer() {
+        return playerItems;
     }
 
     Dungeon up() {
@@ -113,24 +121,24 @@ class Dungeon {
         if (!gameOver) {
             if (Objects.equals(playerX, monsterX) && Objects.equals(playerY, monsterY)) {
                 System.out.println("Player fight against monster");
-                while (monsterHealth > 0 && player.getHealth() > 0 && player.getHealth() > -4) {
-                    monsterHealth = monsterHealth - player.getForce() - player.items().iterator().next().getDamage();
-                    System.out.format("Player hit monster with %s damage.%n", player.items().get(0).getDamage() + player.getForce());
+                while (monsterHealth > 0 && player_health > 0 && player_health > -4) {
+                    monsterHealth = monsterHealth - playerStrength - playerItems.iterator().next().getDamage();
+                    System.out.format("Player hit monster with %s damage.%n", playerItems.get(0).getDamage() + playerStrength);
                     if (monsterHealth <= 0) break;
                     System.out.println("Monster survives and got " + monsterHealth + " hp");
-                    int oldHealthPlayer = retrieveCurrentHealth(player);
-                    player.setHealth(oldHealthPlayer - monsterForce);
-                    int newPl_Healty = player.getHealth();
+                    int oldHealthPlayer = retrieveCurrentHealth(this);
+                    player_health = oldHealthPlayer - monsterForce;
+                    int newPl_Healty = player_health;
                     System.out.println("Monster hits Player with " + (oldHealthPlayer - newPl_Healty) + " damage.");
                 }
-                if (player.getHealth() <= 0) {
+                if (player_health <= 0) {
                     System.out.println("Monster killed player");
                     gameOver = true;
                 }
                 else
-                if (player.getHealth() > 0)
+                if (player_health > 0)
                 {
-                    System.out.println(player + "  killed monster ");
+                    System.out.println(name_secret + "  killed monster ");
                     monsterX = null;
                 }
             }
@@ -141,8 +149,8 @@ class Dungeon {
         return this;
     }
 
-    private static final int retrieveCurrentHealth(Player player) {
-        return player.getHealth();
+    private static final int retrieveCurrentHealth(Dungeon myInstanceOfTheDungeon) {
+        return myInstanceOfTheDungeon.player_health;
     }
 
     static String play(String asciiArt, Random random) {
@@ -201,12 +209,56 @@ class Dungeon {
     }
 
     Dungeon createPlayer(String name, int force, int health) {
-        this.player = new Player(name, force, health);
+        int sum = name.toUpperCase().chars().map(c -> {
+            switch (c) {
+                case 'A': case 'F': case 'K': case 'P': case 'U': case 'Z': return 0;
+                case 'B': case 'G': case 'L': case 'Q': case 'V':           return 1;
+                case 'C': case 'H': case 'M': case 'R': case 'W':           return 2;
+                case 'D': case 'I': case 'N': case 'S': case 'X':           return 3;
+                case 'E': case 'J': case 'O': case 'T': case 'Y':           return 4;
+                case '0': case '5':                                         return 5;
+                case '1': case '6':                                         return 6;
+                case '2': case '7': case '!': case '?': case '-': case '&': return 7;
+                case '3': case '8':                                         return 8;
+                case '4': case '9':                                         return 9;
+                default: throw new IllegalArgumentException();
+            }
+        }).sum();
+
+        name_secret = name;
+
+        while (sum > 9) {
+            sum = Integer.toString(sum).chars().map(c -> parseInt(Character.toString((char) c))).sum();
+            if (sum > 4) {
+                this.name_secret = name;
+            }
+        }
+
+        switch (sum) {
+            case 0: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Medal"));                   break;
+            case 1: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Boots of Speed"));          break;
+            case 2: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Headgear Armor Item"));     break;
+            case 3: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Ring of Protection"));      break;
+            case 4: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Ring of Fire Resistance")); break;
+            case 5: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Ring of Spell Turning"));   break;
+            case 6: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Gauntlets of Ogre Power")); break;
+            case 7: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Anklet"));                  break;
+            case 8: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Brooch"));                  break;
+            case 9: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Orb"));                     break;
+            default: throw new IllegalArgumentException();
+        }
+
+        this.playerStrength = force;
+        this.player_health = health;
         return this;
     }
 
     Dungeon createPlayer(String playerName, int force, int health, Item item) {
-        this.player = new Player(playerName, force, health, item);
+         playerItems = singletonList(item);
+        this.playerStrength = force;
+        this.player_health = health;
+        // set secret name to remember
+        name_secret = playerName;
         return this;
     }
 
@@ -229,7 +281,7 @@ class Dungeon {
                     } else {
                         out.append('#');
                     }
-                } else if (x == playerX && y == playerY && player != null && player.getHealth() > 0) {
+                } else if (x == playerX && y == playerY && player_health > 0) {
                     out.append('P');
                 } else if (monsterX != null && x == monsterX && monsterY != null && y == monsterY) {
                     out.append('M');

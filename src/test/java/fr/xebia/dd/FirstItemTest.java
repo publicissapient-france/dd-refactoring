@@ -48,12 +48,12 @@ public class FirstItemTest {
 
     @Test
     public void should_give_an_item_when_player_is_created() {
-        Player player = new Dungeon("" +
+        Dungeon dungeon = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
-                "###").createPlayer(playerName, 10, 20).player().orElseThrow(AssertionError::new);
+                "###").createPlayer(playerName, 10, 20);
 
-        List<Item> items = player.items();
+        List<Item> items = dungeon.itemsOfThePlayer();
 
         assertThat(items).containsExactly(new Item(itemName));
     }
