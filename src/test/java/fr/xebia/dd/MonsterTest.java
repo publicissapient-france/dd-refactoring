@@ -22,6 +22,7 @@ public class MonsterTest {
                 "#MP#\n" +
                 "#E##"
         ).createPlayer("player", 10, 20, new Item("an item", 5)).withMonster(20, 20);
+        systemOutRule.clearLog();
 
         dungeon.left();
 
@@ -45,6 +46,7 @@ public class MonsterTest {
                 "#PM#\n" +
                 "####"
         ).createPlayer("grooooot", 8, 20, new Item("other item", 5)).withMonster(20, 10);
+        systemOutRule.clearLog();
 
         dungeon.right();
 

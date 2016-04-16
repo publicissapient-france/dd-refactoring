@@ -56,4 +56,9 @@ class Item {
     int getDamage() {
         return damage;
     }
+
+    @Override
+    public String toString() {
+        return name + " +" + damage + "dmg";
+    }
 }

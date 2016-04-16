@@ -250,6 +250,7 @@ class Dungeon {
 
         this.playerStrength = force;
         this.player_health = health;
+        System.out.println("Player " + name + " has strength " + force + " with " + health + "hp wearing " + playerItems.iterator().next());
         return this;
     }
 
@@ -263,6 +264,7 @@ class Dungeon {
     }
 
     Dungeon withMonster(int monsterForce, int monsterHealth) {
+        System.out.println("Monster with force " + monsterForce + " and " + monsterHealth + "hp.");
         this.monsterForce = monsterForce;
         this.monsterHealth = monsterHealth;
         return this;

@@ -25,6 +25,8 @@ public class ScenariiTest {
                 "#         #\n" +
                 "###########", new Random(89))
         ).isEqualTo("" +
+                "Player rWrPmq6 has strength 7 with 27hp wearing Gauntlets of Ogre Power +2dmg\n" +
+                "Monster with force 4 and 15hp.\n" +
                 "###########\n" +
                 "#         #\n" +
                 "#       P #\n" +
@@ -69,6 +71,8 @@ public class ScenariiTest {
                 "#         #\n" +
                 "###########", new Random(96))
         ).isEqualTo("" +
+                "Player ixl9mWQFn has strength 12 with 3hp wearing Gauntlets of Ogre Power +2dmg\n" +
+                "Monster with force 8 and 20hp.\n" +
                 "###########\n" +
                 "#         #\n" +
                 "#       P #\n" +
@@ -109,6 +113,8 @@ public class ScenariiTest {
                 "#         #\n" +
                 "###########", new Random(56))
         ).isEqualTo("" +
+                "Player 9Q1M6 has strength 16 with 10hp wearing Gauntlets of Ogre Power +2dmg\n" +
+                "Monster with force 10 and 24hp.\n" +
                 "###########\n" +
                 "#         #\n" +
                 "#       P #\n" +

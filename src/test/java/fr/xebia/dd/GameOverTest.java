@@ -20,6 +20,7 @@ public class GameOverTest {
                 "###"
         );
         createPlayer("player");
+        systemOutRule.clearLog();
 
         dungeon.up();
 
@@ -35,6 +36,7 @@ public class GameOverTest {
                 "#E#"
         );
         createPlayer("player");
+        systemOutRule.clearLog();
 
         dungeon.down();
 
@@ -51,6 +53,7 @@ public class GameOverTest {
                 "###"
         );
         createPlayer("player");
+        systemOutRule.clearLog();
 
         dungeon.right();
 
@@ -66,6 +69,7 @@ public class GameOverTest {
                 "###"
         );
         createPlayer("player");
+        systemOutRule.clearLog();
 
         dungeon.left();
 
@@ -81,6 +85,7 @@ public class GameOverTest {
                 "###"
         );
         createPlayer("player");
+        systemOutRule.clearLog();
 
         dungeon.up();
 
@@ -95,6 +100,7 @@ public class GameOverTest {
                 "###"
         );
         createPlayer("player");
+        systemOutRule.clearLog();
         dungeon.up();
 
         dungeon.up();
@@ -115,6 +121,7 @@ public class GameOverTest {
                 "###########"
         );
         createPlayer("player");
+        systemOutRule.clearLog();
 
         dungeon
                 .up()
