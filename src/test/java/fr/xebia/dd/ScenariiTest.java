@@ -38,10 +38,10 @@ public class ScenariiTest {
                 "Player moved left\nPlayer moved left\nPlayer moved down\nPlayer moved down\nPlayer moved up\n" +
                 "Player moved up\nPlayer moved left\nPlayer moved left\nPlayer moved down\n" +
                 "Player fight against monster\n" +
-                "Player hit monster with 8 damage.\n" +
-                "Monster survives and got 7 hp\n" +
+                "Player hit monster with 9 damage.\n" +
+                "Monster survives and got 6 hp\n" +
                 "Monster hits Player with 4 damage.\n" +
-                "Player hit monster with 8 damage.\n" +
+                "Player hit monster with 9 damage.\n" +
                 "rWrPmq6  killed monster \n" +
                 "Player moved left\nPlayer moved right\nPlayer moved down\nPlayer moved left\nPlayer moved down\n" +
                 "Player moved up\nPlayer moved left\nPlayer moved right\nPlayer moved left\nPlayer moved left\n" +
@@ -81,8 +81,8 @@ public class ScenariiTest {
                 "Player moved right\nPlayer moved down\nPlayer moved left\nPlayer moved left\nPlayer moved left\n" +
                 "Player moved right\nPlayer moved up\nPlayer moved up\nPlayer moved left\nPlayer moved left\n" +
                 "Player moved left\nPlayer moved up\nPlayer fight against monster\n" +
-                "Player hit monster with 13 damage.\n" +
-                "Monster survives and got 7 hp\n" +
+                "Player hit monster with 14 damage.\n" +
+                "Monster survives and got 6 hp\n" +
                 "Monster hits Player with 8 damage.\n" +
                 "Monster killed player\n" +
                 "Game is over\n" +
