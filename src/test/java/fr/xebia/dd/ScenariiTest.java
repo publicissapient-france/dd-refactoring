@@ -13,6 +13,9 @@ public class ScenariiTest {
 
     @Test
     public void should_play_when_player_kills_monster() {
+        maybePrintln("" +
+                "Player kills monster\n" +
+                "====================\n");
         assertWithMaybeOutputThat(Dungeon.play("" +
                 "###########\n" +
                 "#         #\n" +
@@ -54,6 +57,9 @@ public class ScenariiTest {
 
     @Test
     public void should_play_when_monster_kills_player() {
+        maybePrintln("" +
+                "Monster kills player\n" +
+                "====================\n");
         assertWithMaybeOutputThat(Dungeon.play("" +
                 "###########\n" +
                 "#         #\n" +
@@ -91,6 +97,9 @@ public class ScenariiTest {
 
     @Test
     public void should_play_when_player_escape_without_fighting_against_monster() {
+        maybePrintln("" +
+                "Player escape without fighting against monster\n" +
+                "==============================================\n");
         assertWithMaybeOutputThat(Dungeon.play("" +
                 "###########\n" +
                 "#         #\n" +
@@ -144,10 +153,14 @@ public class ScenariiTest {
     }
 
     private static AbstractCharSequenceAssert<?, String> assertWithMaybeOutputThat(String executionResult) {
-        if (parseBoolean(System.getProperty("output", "false"))) {
-            System.out.println(executionResult);
-        }
+        maybePrintln(executionResult);
         return assertThat(executionResult);
+    }
+
+    private static void maybePrintln(String stringToMaybePrint) {
+        if (parseBoolean(System.getProperty("output", "false"))) {
+            System.out.println(stringToMaybePrint);
+        }
     }
 
 }
