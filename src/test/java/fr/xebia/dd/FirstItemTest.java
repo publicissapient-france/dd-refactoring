@@ -1,18 +1,22 @@
 package fr.xebia.dd;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Parameterized.class)
 public class FirstItemTest {
+
+    @Rule
+    public SystemOutRule systemOutRule = new SystemOutRule().enableLog();
 
     @Parameters(name = "{1} should have {0}")
     public static Iterable<String[]> itemForPlayers() {
@@ -48,14 +52,15 @@ public class FirstItemTest {
 
     @Test
     public void should_give_an_item_when_player_is_created() {
-        Dungeon dungeon = new Dungeon("" +
+        new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
-                "###").createPlayer(playerName, 10, 20);
+                "###",
+                playerName, 10, 20);
 
-        List<Item> items = dungeon.itemsOfThePlayer();
-
-        assertThat(items).containsExactly(new Item(itemName));
+        assertThat(systemOutRule.getLog()).startsWith("" +
+                "Player " + playerName + " has strength 10 with 20hp " +
+                "wearing " + itemName);
     }
 
 }

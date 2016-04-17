@@ -15,7 +15,8 @@ public class DungeonTest {
                 "         P  #\n" +
                 "#           #\n" +
                 "#           #\n" +
-                "#######  E###").createPlayer("name", 0, 1);
+                "#######  E###",
+                "name", 0, 1);
 
         String displayedDungeon = dungeon.toString();
 
@@ -34,8 +35,8 @@ public class DungeonTest {
         Dungeon dungeon = new Dungeon("" +
                 "#####\n" +
                 "# MP#\n" +
-                "#E###"
-        ).createPlayer("grooooot", 8, 20).withMonster(20, 10);
+                "#E###",
+                "grooooot", 8, 20).withMonster(20, 10);
 
         String displayedDungeon = dungeon.left().right().toString();
 
@@ -50,8 +51,8 @@ public class DungeonTest {
         Dungeon dungeon = new Dungeon("" +
                 "####\n" +
                 "#MP#\n" +
-                "#E##"
-        ).createPlayer("player", 10, 20).withMonster(20, 20);
+                "#E##",
+                "player", 10, 20).withMonster(20, 20);
 
         String displayedDungeon = dungeon.left().toString();
 
@@ -67,7 +68,8 @@ public class DungeonTest {
         Dungeon dungeon = new Dungeon("" +
                 "#E#\n" +
                 "#P#\n" +
-                "###").createPlayer("name", 0, 1);
+                "###",
+                "name", 0, 1);
 
         String displayedDungeon = dungeon.toString();
 
@@ -82,7 +84,8 @@ public class DungeonTest {
         Dungeon dungeon = new Dungeon("" +
                 "###\n" +
                 "#PE\n" +
-                "###").createPlayer("name", 0, 1);
+                "###",
+                "name", 0, 1);
 
         String displayedDungeon = dungeon.toString();
 
@@ -97,7 +100,7 @@ public class DungeonTest {
         Dungeon dungeon = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
-                "###").createPlayer("name", 0, 1);
+                "###", "name", 0, 1);
 
         String displayedDungeon = dungeon.toString();
 

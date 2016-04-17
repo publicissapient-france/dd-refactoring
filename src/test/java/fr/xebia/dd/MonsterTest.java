@@ -20,8 +20,8 @@ public class MonsterTest {
         Dungeon dungeon = new Dungeon("" +
                 "####\n" +
                 "#MP#\n" +
-                "#E##"
-        ).createPlayer("player", 10, 20).withMonster(20, 20);
+                "#E##",
+                "player", 10, 20).withMonster(20, 20);
         systemOutRule.clearLog();
 
         dungeon.left();
@@ -44,8 +44,8 @@ public class MonsterTest {
         Dungeon dungeon = new Dungeon("" +
                 "#E##\n" +
                 "#PM#\n" +
-                "####"
-        ).createPlayer("grooooot", 8, 20).withMonster(20, 10);
+                "####",
+                "grooooot", 8, 20).withMonster(20, 10);
         systemOutRule.clearLog();
 
         dungeon.right();

@@ -17,9 +17,8 @@ public class GameOverTest {
         dungeon =  new Dungeon("" +
                 "#E#\n" +
                 "#P#\n" +
-                "###"
-        );
-        createPlayer("player");
+                "###",
+                "player", 10, 10);
         systemOutRule.clearLog();
 
         dungeon.up();
@@ -33,9 +32,8 @@ public class GameOverTest {
         dungeon = new Dungeon("" +
                 "###\n" +
                 "#P#\n" +
-                "#E#"
-        );
-        createPlayer("player");
+                "#E#",
+                "player", 10, 10);
         systemOutRule.clearLog();
 
         dungeon.down();
@@ -50,9 +48,8 @@ public class GameOverTest {
         dungeon = new Dungeon("" +
                 "###\n" +
                 "#PE\n" +
-                "###"
-        );
-        createPlayer("player");
+                "###",
+                "player", 10, 10);
         systemOutRule.clearLog();
 
         dungeon.right();
@@ -66,9 +63,8 @@ public class GameOverTest {
         dungeon = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
-                "###"
-        );
-        createPlayer("player");
+                "###",
+                "player", 10, 10);
         systemOutRule.clearLog();
 
         dungeon.left();
@@ -82,9 +78,8 @@ public class GameOverTest {
         dungeon = new Dungeon("" +
                 "###\n" +
                 "EP#\n" +
-                "###"
-        );
-        createPlayer("player");
+                "###",
+                "player", 10, 10);
         systemOutRule.clearLog();
 
         dungeon.up();
@@ -97,9 +92,8 @@ public class GameOverTest {
         dungeon = new Dungeon("" +
                 "#E#\n" +
                 "#P#\n" +
-                "###"
-        );
-        createPlayer("player");
+                "###",
+                "player", 10, 10);
         systemOutRule.clearLog();
         dungeon.up();
 
@@ -118,9 +112,8 @@ public class GameOverTest {
                 "#         #\n" +
                 "E         #\n" +
                 "#         #\n" +
-                "###########"
-        );
-        createPlayer("player");
+                "###########",
+                "player", 10, 10);
         systemOutRule.clearLog();
 
         dungeon
@@ -140,10 +133,6 @@ public class GameOverTest {
                 "Player moved down",
                 "Player moved left",
                 "Game is over");
-    }
-
-    private void createPlayer(String player) {
-        this.dungeon.createPlayer(player, 10, 10);
     }
 
 }
