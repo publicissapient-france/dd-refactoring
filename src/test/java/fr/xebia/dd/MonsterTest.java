@@ -26,7 +26,6 @@ public class MonsterTest {
 
         dungeon.left();
 
-        assertThat(dungeon.isGameOver()).isTrue();
         assertThat(systemOutRule.getLog().split("\n")).containsExactly(
                 "Player moved left",
                 "Player fight against monster",
@@ -50,13 +49,11 @@ public class MonsterTest {
 
         dungeon.right();
 
-        assertThat(dungeon.isGameOver()).isFalse();
         assertThat(systemOutRule.getLog().split("\n")).containsExactly(
                 "Player moved right",
                 "Player fight against monster",
                 "Player hit monster with 15 damage.",
-                "grooooot  killed monster "
-        );
+                "grooooot  killed monster ");
     }
 
 }

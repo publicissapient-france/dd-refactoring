@@ -23,8 +23,7 @@ public class GameOverTest {
 
         dungeon.up();
 
-        assertThat(dungeon.isGameOver()).isTrue();
-        assertThat(systemOutRule.getLog().split("\n")).containsExactly("Player moved up", "Game is over");
+        assertThat(systemOutRule.getLog().split("\n")).contains("Game is over");
     }
 
     @Test
@@ -38,8 +37,7 @@ public class GameOverTest {
 
         dungeon.down();
 
-        assertThat(dungeon.isGameOver()).isTrue();
-        assertThat(systemOutRule.getLog().split("\n")).containsExactly("Player moved down", "Game is over");
+        assertThat(systemOutRule.getLog().split("\n")).contains("Game is over");
     }
 
 
@@ -54,8 +52,7 @@ public class GameOverTest {
 
         dungeon.right();
 
-        assertThat(dungeon.isGameOver()).isTrue();
-        assertThat(systemOutRule.getLog().split("\n")).containsExactly("Player moved right", "Game is over");
+        assertThat(systemOutRule.getLog().split("\n")).contains("Game is over");
     }
 
     @Test
@@ -69,8 +66,7 @@ public class GameOverTest {
 
         dungeon.left();
 
-        assertThat(dungeon.isGameOver()).isTrue();
-        assertThat(systemOutRule.getLog().split("\n")).containsExactly("Player moved left", "Game is over");
+        assertThat(systemOutRule.getLog().split("\n")).contains("Game is over");
     }
 
     @Test
@@ -94,13 +90,12 @@ public class GameOverTest {
                 "#P#\n" +
                 "###",
                 "player", 10, 10);
+        dungeon.up();
         systemOutRule.clearLog();
-        dungeon.up();
 
         dungeon.up();
 
-        assertThat(dungeon.isGameOver()).isTrue();
-        assertThat(systemOutRule.getLog().split("\n")).containsExactly("Player moved up", "Game is over");
+        assertThat(systemOutRule.getLog()).isEmpty();
     }
 
     @Test
@@ -125,7 +120,6 @@ public class GameOverTest {
                 .down()
                 .left(); // exit
 
-        assertThat(dungeon.isGameOver()).isTrue();
         assertThat(systemOutRule.getLog().split("\n")).containsExactly(
                 "Player moved up",
                 "Player moved right", "Player moved down", "Player moved left", "Player moved down",
