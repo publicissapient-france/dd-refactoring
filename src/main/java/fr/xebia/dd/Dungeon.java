@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.function.BooleanSupplier;
 
 import static java.lang.Integer.parseInt;
-import static java.util.Collections.singletonList;
 
 class Dungeon {
 
@@ -48,7 +47,7 @@ class Dungeon {
         }
     }
 
-    Dungeon(String asciiArt) {
+    Dungeon(String asciiArt, String playerName, int forceOfThePlayer, int p_hp) {
         int randomized = random.nextInt(984);
         randomized += randomized + 1;
         String[] lines = asciiArt.split("\n");
@@ -71,10 +70,49 @@ class Dungeon {
                 }
             }
         }
-    }
 
-    List<Item> itemsOfThePlayer() {
-        return playerItems;
+        int sum = playerName.toUpperCase().chars().map(c -> {
+            switch (c) {
+                case 'A': case 'F': case 'K': case 'P': case 'U': case 'Z': return 0;
+                case 'B': case 'G': case 'L': case 'Q': case 'V':           return 1;
+                case 'C': case 'H': case 'M': case 'R': case 'W':           return 2;
+                case 'D': case 'I': case 'N': case 'S': case 'X':           return 3;
+                case 'E': case 'J': case 'O': case 'T': case 'Y':           return 4;
+                case '0': case '5':                                         return 5;
+                case '1': case '6':                                         return 6;
+                case '2': case '7': case '!': case '?': case '-': case '&': return 7;
+                case '3': case '8':                                         return 8;
+                case '4': case '9':                                         return 9;
+                default: throw new IllegalArgumentException();
+            }
+        }).sum();
+
+        name_secret = playerName;
+
+        while (sum > 9) {
+            sum = Integer.toString(sum).chars().map(c -> parseInt(Character.toString((char) c))).sum();
+            if (sum > 4) {
+                this.name_secret = playerName;
+            }
+        }
+
+        switch (sum) {
+            case 0: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Medal"));                   break;
+            case 1: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Boots of Speed"));          break;
+            case 2: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Headgear Armor Item"));     break;
+            case 3: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Ring of Protection"));      break;
+            case 4: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Ring of Fire Resistance")); break;
+            case 5: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Ring of Spell Turning"));   break;
+            case 6: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Gauntlets of Ogre Power")); break;
+            case 7: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Anklet"));                  break;
+            case 8: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Brooch"));                  break;
+            case 9: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Orb"));                     break;
+            default: throw new IllegalArgumentException();
+        }
+
+        this.playerStrength = forceOfThePlayer;
+        this.player_health = p_hp;
+        System.out.println("Player " + playerName + " has strength " + forceOfThePlayer + " with " + p_hp + "hp wearing " + playerItems.iterator().next());
     }
 
     Dungeon up() {
@@ -162,8 +200,7 @@ class Dungeon {
         for (int i = 0; i < random.nextInt(10) + 5; i++) {
             playerName.append(possibleCharacters.charAt(random.nextInt(possibleCharacters.length())));
         }
-        Dungeon dungeon = new Dungeon(asciiArt)
-                .createPlayer(playerName.toString(), random.nextInt(20) + 1, random.nextInt(40) + 1)
+        Dungeon dungeon = new Dungeon(asciiArt, playerName.toString(), random.nextInt(20) + 1, random.nextInt(40) + 1)
                 .withMonster(random.nextInt(10) + 1, random.nextInt(30) + 1);
 
         System.out.println(dungeon);
@@ -206,52 +243,6 @@ class Dungeon {
             System.exit(1);
         }
         System.out.println(play(asciiArt.toString(), random));
-    }
-
-    Dungeon createPlayer(String name, int force, int health) {
-        int sum = name.toUpperCase().chars().map(c -> {
-            switch (c) {
-                case 'A': case 'F': case 'K': case 'P': case 'U': case 'Z': return 0;
-                case 'B': case 'G': case 'L': case 'Q': case 'V':           return 1;
-                case 'C': case 'H': case 'M': case 'R': case 'W':           return 2;
-                case 'D': case 'I': case 'N': case 'S': case 'X':           return 3;
-                case 'E': case 'J': case 'O': case 'T': case 'Y':           return 4;
-                case '0': case '5':                                         return 5;
-                case '1': case '6':                                         return 6;
-                case '2': case '7': case '!': case '?': case '-': case '&': return 7;
-                case '3': case '8':                                         return 8;
-                case '4': case '9':                                         return 9;
-                default: throw new IllegalArgumentException();
-            }
-        }).sum();
-
-        name_secret = name;
-
-        while (sum > 9) {
-            sum = Integer.toString(sum).chars().map(c -> parseInt(Character.toString((char) c))).sum();
-            if (sum > 4) {
-                this.name_secret = name;
-            }
-        }
-
-        switch (sum) {
-            case 0: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Medal"));                   break;
-            case 1: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Boots of Speed"));          break;
-            case 2: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Headgear Armor Item"));     break;
-            case 3: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Ring of Protection"));      break;
-            case 4: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Ring of Fire Resistance")); break;
-            case 5: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Ring of Spell Turning"));   break;
-            case 6: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Gauntlets of Ogre Power")); break;
-            case 7: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Anklet"));                  break;
-            case 8: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Brooch"));                  break;
-            case 9: playerItems = new ArrayList<>(); this.playerItems.add(0, new Item("Orb"));                     break;
-            default: throw new IllegalArgumentException();
-        }
-
-        this.playerStrength = force;
-        this.player_health = health;
-        System.out.println("Player " + name + " has strength " + force + " with " + health + "hp wearing " + playerItems.iterator().next());
-        return this;
     }
 
     Dungeon withMonster(int monsterForce, int monsterHealth) {
