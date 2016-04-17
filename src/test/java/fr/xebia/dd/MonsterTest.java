@@ -21,7 +21,7 @@ public class MonsterTest {
                 "####\n" +
                 "#MP#\n" +
                 "#E##"
-        ).createPlayer("player", 10, 20, new Item("an item", 5)).withMonster(20, 20);
+        ).createPlayer("player", 10, 20).withMonster(20, 20);
         systemOutRule.clearLog();
 
         dungeon.left();
@@ -30,8 +30,8 @@ public class MonsterTest {
         assertThat(systemOutRule.getLog().split("\n")).containsExactly(
                 "Player moved left",
                 "Player fight against monster",
-                "Player hit monster with 15 damage.",
-                "Monster survives and got 5 hp",
+                "Player hit monster with 13 damage.",
+                "Monster survives and got 7 hp",
                 "Monster hits Player with 20 damage.",
                 "Monster killed player",
                 "Game is over");
@@ -45,7 +45,7 @@ public class MonsterTest {
                 "#E##\n" +
                 "#PM#\n" +
                 "####"
-        ).createPlayer("grooooot", 8, 20, new Item("other item", 5)).withMonster(20, 10);
+        ).createPlayer("grooooot", 8, 20).withMonster(20, 10);
         systemOutRule.clearLog();
 
         dungeon.right();
@@ -54,7 +54,7 @@ public class MonsterTest {
         assertThat(systemOutRule.getLog().split("\n")).containsExactly(
                 "Player moved right",
                 "Player fight against monster",
-                "Player hit monster with 13 damage.",
+                "Player hit monster with 15 damage.",
                 "grooooot  killed monster "
         );
     }

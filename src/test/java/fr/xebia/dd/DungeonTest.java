@@ -35,7 +35,7 @@ public class DungeonTest {
                 "#####\n" +
                 "# MP#\n" +
                 "#E###"
-        ).createPlayer("grooooot", 8, 20, new Item("other item", 5)).withMonster(20, 10);
+        ).createPlayer("grooooot", 8, 20).withMonster(20, 10);
 
         String displayedDungeon = dungeon.left().right().toString();
 
@@ -51,7 +51,7 @@ public class DungeonTest {
                 "####\n" +
                 "#MP#\n" +
                 "#E##"
-        ).createPlayer("player", 10, 20, new Item("an item", 5)).withMonster(20, 20);
+        ).createPlayer("player", 10, 20).withMonster(20, 20);
 
         String displayedDungeon = dungeon.left().toString();
 

@@ -254,15 +254,6 @@ class Dungeon {
         return this;
     }
 
-    Dungeon createPlayer(String playerName, int force, int health, Item item) {
-         playerItems = singletonList(item);
-        this.playerStrength = force;
-        this.player_health = health;
-        // set secret name to remember
-        name_secret = playerName;
-        return this;
-    }
-
     Dungeon withMonster(int monsterForce, int monsterHealth) {
         System.out.println("Monster with force " + monsterForce + " and " + monsterHealth + "hp.");
         this.monsterForce = monsterForce;
