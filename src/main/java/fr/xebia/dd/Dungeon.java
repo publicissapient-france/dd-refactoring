@@ -143,10 +143,6 @@ class Dungeon {
                 () -> playerY++);
     }
 
-    boolean isGameOver() {
-        return gameOver;
-    }
-
     private Dungeon move(String direction, BooleanSupplier playerIsNotStuckToWall, BooleanSupplier playerIsInFrontOfExit, Runnable updateCoordinate) {
         if (gameOver) {
             return this;
