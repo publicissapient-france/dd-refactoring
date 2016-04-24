@@ -3,13 +3,43 @@ package fr.xebia.dd;
 import org.assertj.core.api.AbstractCharSequenceAssert;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Random;
 
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Math.random;
+import static java.nio.file.Files.lines;
+import static java.nio.file.Files.newDirectoryStream;
+import static java.nio.file.Files.readAllLines;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.StreamSupport.stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScenariiTest {
+
+    @Test
+    public void should_validate_every_usecases() throws URISyntaxException, IOException {
+        stream(newDirectoryStream(Paths.get(getClass().getResource("/usecases").toURI())).spliterator(), false)
+                .filter(usecase -> usecase.toString().endsWith("-input.txt"))
+                .forEach(usecase -> {
+                    try {
+                        List<String> lines = readAllLines(usecase);
+                        int seed = Integer.parseInt(lines.get(0));
+                        lines.remove(0);
+                        String dungeon = lines.stream().collect(joining("\n"));
+                        String scenario = usecase.getFileName().toString().replace("-input.txt", "");
+                        assertWithMaybeOutputThat(Dungeon.play(dungeon, new Random(seed)))
+                                .as(scenario)
+                                .isEqualTo(lines(Paths.get(usecase.getParent().toString(), scenario + "-output.txt"))
+                                        .collect(joining("\n", "", "\n")));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
 
     @Test
     public void should_play_when_player_kills_monster() {
