@@ -1,0 +1,57 @@
+Player rWrPmq6 has strength 7 with 27hp wearing Gauntlets of Ogre Power +2dmg
+Monster with force 4 and 15hp.
+###########
+#         #
+#       P #
+#  M      #
+E         #
+#         #
+###########
+Player moved right
+Player moved up
+Player moved left
+Player moved left
+Player moved down
+Player moved left
+Player moved left
+Player moved left
+Player moved up
+Player moved right
+Player moved right
+Player moved left
+Player moved right
+Player moved right
+Player moved down
+Player moved left
+Player moved left
+Player moved down
+Player moved down
+Player moved up
+Player moved up
+Player moved left
+Player moved left
+Player moved down
+Player fight against monster
+Player hit monster with 9 damage.
+Monster survives and got 6 hp
+Monster hits Player with 4 damage.
+Player hit monster with 9 damage.
+rWrPmq6  killed monster 
+Player moved left
+Player moved right
+Player moved down
+Player moved left
+Player moved down
+Player moved up
+Player moved left
+Player moved right
+Player moved left
+Player moved left
+Game is over
+###########
+#         #
+#         #
+#         #
+E         #
+#         #
+###########

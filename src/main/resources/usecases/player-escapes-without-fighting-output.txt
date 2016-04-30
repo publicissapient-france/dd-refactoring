@@ -1,0 +1,37 @@
+Player 9Q1M6 has strength 16 with 10hp wearing Gauntlets of Ogre Power +2dmg
+Monster with force 10 and 24hp.
+###########
+#         #
+#       P #
+#  M      #
+E         #
+#         #
+###########
+Player moved left
+Player moved left
+Player moved down
+Player moved right
+Player moved left
+Player moved up
+Player moved left
+Player moved down
+Player moved down
+Player moved left
+Player moved left
+Player moved left
+Player moved left
+Player moved up
+Player moved down
+Player moved up
+Player moved down
+Player moved up
+Player moved down
+Player moved left
+Game is over
+###########
+#         #
+#         #
+#  M      #
+E         #
+#         #
+###########
