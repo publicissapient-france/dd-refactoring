@@ -1,9 +1,6 @@
 package fr.xebia.dd;
 
-import com.google.common.io.Resources;
-
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.*;
 import java.util.function.BooleanSupplier;
 
@@ -224,9 +221,15 @@ class Dungeon {
         Random random = new Random();
         StringBuilder asciiArt = new StringBuilder();
         System.out.print("seed - nothing for pure random> ");
-        try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(new File(Resources.getResource("usecases/monster-kills-player-input.txt").toURI()))))) {
+        try (BufferedReader in = new BufferedReader(new StringReader(
+                "96\n" +
+                "###########\n" +
+                "#         #\n" +
+                "#       P #\n" +
+                "#  M      #\n" +
+                "E         #\n" +
+                "#         #\n" +
+                "###########\n"))) {
             String currentLine = in.readLine();
             if (currentLine == null) {
                 System.exit(2);
@@ -242,8 +245,6 @@ class Dungeon {
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
         System.out.println(play(asciiArt.toString(), random));
     }
