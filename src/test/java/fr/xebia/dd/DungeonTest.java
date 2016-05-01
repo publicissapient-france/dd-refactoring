@@ -18,6 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DungeonTest {
 
+    public static final String MONSTER_KILLS_PLAYER_INPUT = "monster-kills-player-input";
+    public static final String PLAYER_ESCAPES_WITHOUT_FIGHTING_INPUT = "player-escapes-without-fighting-input";
+    public static final String PLAYER_KILLS_MONSTER_INPUT = "player-kills-monster-input";
+
+    public static final String GOLDEN_TICKET_STORAGE_DIRECTORY = "/home/dolounet/dev/test-fixtures/test";
+
     @Rule
     public SystemOutRule systemOutRule = new SystemOutRule().enableLog().mute();
 
@@ -26,43 +32,51 @@ public class DungeonTest {
     public void golden_ticket_generator() throws Exception {
         for (int i = 0; i < 1000; i++) {
             Dungeon.setRandom(new Random(i));
-            writeScenarioIteration(i, "monster-kills-player-input");
-            writeScenarioIteration(i, "player-escapes-without-fighting-input");
-            writeScenarioIteration(i, "player-kills-monster-input");
-        }
-    }
-
-    private void writeScenarioIteration(int i, String scenarioName) throws URISyntaxException, IOException {
-        File inputFile = new File(Resources.getResource("usecases/" + scenarioName + ".txt").toURI());
-        Dungeon.setInputFile(inputFile);
-        File outputFile = new File("/home/dolounet/dev/test-fixtures/test" + scenarioName + i);
-        outputFile.delete();
-        outputFile.createNewFile();
-        try (FileWriter testFileWriter = new FileWriter(outputFile)) {
-            systemOutRule.clearLog();
-            Dungeon.main(new String[0]);
-            testFileWriter.append(systemOutRule.getLog());
+            writeScenarioIteration(i, MONSTER_KILLS_PLAYER_INPUT);
+            writeScenarioIteration(i, PLAYER_ESCAPES_WITHOUT_FIGHTING_INPUT);
+            writeScenarioIteration(i, PLAYER_KILLS_MONSTER_INPUT);
         }
     }
 
     @Test
     public void should_be_consistent_with_golden_ticket() throws Exception {
         for (int i = 0; i < 1000; i++) {
-            assertScenarioIteration(i, "monster-kills-player-input");
-            assertScenarioIteration(i, "player-escapes-without-fighting-input");
-            assertScenarioIteration(i, "player-kills-monster-input");
+            assertScenarioIteration(i, MONSTER_KILLS_PLAYER_INPUT);
+            assertScenarioIteration(i, PLAYER_ESCAPES_WITHOUT_FIGHTING_INPUT);
+            assertScenarioIteration(i, PLAYER_KILLS_MONSTER_INPUT);
         }
+    }
+
+    private void writeScenarioIteration(int i, String scenarioName) throws URISyntaxException, IOException {
+        File inputFile = inputFileOf(scenarioName);
+        Dungeon.setInputFile(inputFile);
+        File goldenTicketFile = new File(GOLDEN_TICKET_STORAGE_DIRECTORY + scenarioName + i);
+        reinitGoldenTicketFile(goldenTicketFile);
+        try (FileWriter testFileWriter = new FileWriter(goldenTicketFile)) {
+            systemOutRule.clearLog();
+            Dungeon.main(new String[0]);
+            testFileWriter.append(systemOutRule.getLog());
+        }
+    }
+
+    private void reinitGoldenTicketFile(File outputFile) throws IOException {
+        outputFile.delete();
+        outputFile.createNewFile();
     }
 
     private void assertScenarioIteration(int i, String scenarioName) throws URISyntaxException, IOException {
         systemOutRule.clearLog();
         Dungeon.setRandom(new Random(i));
-        File inputFile = new File(Resources.getResource("usecases/" + scenarioName + ".txt").toURI());
+        File inputFile = inputFileOf(scenarioName);
         Dungeon.setInputFile(inputFile);
-        String testFileContent = new String(Files.readAllBytes(Paths.get("/home/dolounet/dev/test-fixtures/test" + scenarioName + i)));
+        String testFileContent = new String(Files.readAllBytes(Paths.get(GOLDEN_TICKET_STORAGE_DIRECTORY + scenarioName + i)));
 
         Dungeon.main(new String[0]);
 
         assertThat(systemOutRule.getLog()).isEqualTo(testFileContent);
+    }
+
+    private File inputFileOf(String scenarioName) throws URISyntaxException {
+        return new File(Resources.getResource("usecases/" + scenarioName + ".txt").toURI());
     }
 }
