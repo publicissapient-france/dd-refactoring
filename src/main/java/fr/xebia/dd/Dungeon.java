@@ -11,6 +11,16 @@ import static java.lang.Integer.parseInt;
 
 class Dungeon {
 
+    private static File inputFile;
+
+    static {
+        try {
+            setInputFile(new File(Resources.getResource("usecases/monster-kills-player-input.txt").toURI()));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
     private int playerX;
     private int playerY;
     private Integer monsterX;
@@ -126,6 +136,14 @@ class Dungeon {
         Dungeon.random = random;
     }
 
+    public static File getInputFile() {
+        return inputFile;
+    }
+
+    public static void setInputFile(File inputFile) {
+        Dungeon.inputFile = inputFile;
+    }
+
     Dungeon up() {
         return move("up",
                 () -> playerY > 0,
@@ -231,9 +249,7 @@ class Dungeon {
     public static void main(String[] args) {
         StringBuilder asciiArt = new StringBuilder();
         System.out.print("seed - nothing for pure random> ");
-        try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(new File(Resources.getResource("usecases/monster-kills-player-input.txt").toURI()))))) {
+        try (BufferedReader in = new BufferedReader(getIn())) {
             String currentLine = in.readLine();
             if (currentLine == null) {
                 System.exit(2);
@@ -253,6 +269,11 @@ class Dungeon {
             e.printStackTrace();
         }
         System.out.println(play(asciiArt.toString(), getRandom()));
+    }
+
+    private static Reader getIn() throws FileNotFoundException, URISyntaxException {
+        return new InputStreamReader(
+               new FileInputStream(getInputFile()));
     }
 
     Dungeon withMonster(int monsterForce, int monsterHealth) {
