@@ -15,7 +15,7 @@ class Dungeon {
     private int playerY;
     private Integer monsterX;
     private Integer monsterY;
-    private final Random random = new Random(3230);
+    private static Random random = new Random();
     private String exitDirection;
     private int exitPosition;
 
@@ -51,7 +51,7 @@ class Dungeon {
     }
 
     Dungeon(String asciiArt, String playerName, int forceOfThePlayer, int p_hp) {
-        int randomized = random.nextInt(984);
+        int randomized = getRandom().nextInt(984);
         randomized += randomized + 1;
         String[] lines = asciiArt.split("\n");
         this.height = lines.length - 2;
@@ -116,6 +116,14 @@ class Dungeon {
         this.playerStrength = forceOfThePlayer;
         this.player_health = p_hp;
         System.out.println("Player " + playerName + " has strength " + forceOfThePlayer + " with " + p_hp + "hp wearing " + playerItems.iterator().next());
+    }
+
+    public static Random getRandom() {
+        return random;
+    }
+
+    public static void setRandom(Random random) {
+        Dungeon.random = random;
     }
 
     Dungeon up() {
@@ -221,7 +229,6 @@ class Dungeon {
     }
 
     public static void main(String[] args) {
-        Random random = new Random();
         StringBuilder asciiArt = new StringBuilder();
         System.out.print("seed - nothing for pure random> ");
         try (BufferedReader in = new BufferedReader(
@@ -232,7 +239,7 @@ class Dungeon {
                 System.exit(2);
             }
             try {
-                random.setSeed(Long.parseLong(currentLine));
+                getRandom().setSeed(Long.parseLong(currentLine));
             } catch (NumberFormatException ignored) {
             }
             System.out.println("dungeon as ascii art:");
@@ -245,7 +252,7 @@ class Dungeon {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        System.out.println(play(asciiArt.toString(), random));
+        System.out.println(play(asciiArt.toString(), getRandom()));
     }
 
     Dungeon withMonster(int monsterForce, int monsterHealth) {
