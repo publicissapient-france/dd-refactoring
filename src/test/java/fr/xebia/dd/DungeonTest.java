@@ -22,6 +22,7 @@ public class DungeonTest {
     public static final String PLAYER_ESCAPES_WITHOUT_FIGHTING_INPUT = "player-escapes-without-fighting-input";
     public static final String PLAYER_KILLS_MONSTER_INPUT = "player-kills-monster-input";
 
+    // TODO Change this directory into the one you want to store golden tickets scenarios
     public static final String GOLDEN_TICKET_STORAGE_DIRECTORY = "/home/dolounet/dev/test-fixtures/test";
 
     @Rule
