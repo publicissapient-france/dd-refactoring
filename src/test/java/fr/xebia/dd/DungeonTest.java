@@ -41,8 +41,8 @@ public class DungeonTest {
         for (int i = 0; i < 1000; i++) {
             systemOutRule.clearLog();
             Dungeon.setRandom(new Random(i));
-            File file = new File(Resources.getResource("usecases/monster-kills-player-input.txt").toURI());
-            Dungeon.setInputFile(file);
+            File inputFile = new File(Resources.getResource("usecases/monster-kills-player-input.txt").toURI());
+            Dungeon.setInputFile(inputFile);
             String testFileContent = new String(Files.readAllBytes(Paths.get("/home/dolounet/dev/test-fixtures/test" + i)));
 
             Dungeon.main(new String[0]);
