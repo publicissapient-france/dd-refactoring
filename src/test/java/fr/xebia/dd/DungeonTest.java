@@ -23,7 +23,7 @@ public class DungeonTest {
     public static final String PLAYER_KILLS_MONSTER_INPUT = "player-kills-monster-input";
 
     // TODO Change this directory into the one you want to store golden tickets scenarios
-    public static final String GOLDEN_TICKET_STORAGE_DIRECTORY = "/home/dolounet/dev/test-fixtures/test";
+    public static final String GOLDEN_MASTER_STORAGE_DIRECTORY = ".golden_master";
 
     @Rule
     public SystemOutRule systemOutRule = new SystemOutRule().enableLog().mute();
@@ -51,7 +51,7 @@ public class DungeonTest {
         systemOutRule.clearLog();
         Dungeon.setRandom(new Random(i));
         Dungeon.setInputFile(inputFileOf(scenarioName));
-        File goldenTicketFile = new File(GOLDEN_TICKET_STORAGE_DIRECTORY + scenarioName + i);
+        File goldenTicketFile = new File(GOLDEN_MASTER_STORAGE_DIRECTORY + scenarioName + i);
         reinitGoldenTicketFile(goldenTicketFile);
         try (FileWriter testFileWriter = new FileWriter(goldenTicketFile)) {
             Dungeon.main(new String[0]);
@@ -68,7 +68,7 @@ public class DungeonTest {
         systemOutRule.clearLog();
         Dungeon.setRandom(new Random(i));
         Dungeon.setInputFile(inputFileOf(scenarioName));
-        String testFileContent = new String(Files.readAllBytes(Paths.get(GOLDEN_TICKET_STORAGE_DIRECTORY + scenarioName + i)));
+        String testFileContent = new String(Files.readAllBytes(Paths.get(GOLDEN_MASTER_STORAGE_DIRECTORY + scenarioName + i)));
 
         Dungeon.main(new String[0]);
 
