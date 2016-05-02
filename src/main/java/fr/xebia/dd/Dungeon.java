@@ -250,15 +250,8 @@ class Dungeon {
         StringBuilder asciiArt = new StringBuilder();
         System.out.print("seed - nothing for pure random> ");
         try (BufferedReader in = new BufferedReader(getIn())) {
-            String currentLine = in.readLine();
-            if (currentLine == null) {
-                System.exit(2);
-            }
-            try {
-                getRandom().setSeed(Long.parseLong(currentLine));
-            } catch (NumberFormatException ignored) {
-            }
             System.out.println("dungeon as ascii art:");
+            String currentLine;
             while ((currentLine = in.readLine()) != null) {
                 asciiArt.append(currentLine).append('\n');
             }
