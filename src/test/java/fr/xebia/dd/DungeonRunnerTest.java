@@ -16,7 +16,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DungeonTest {
+public class DungeonRunnerTest {
 
     public static final String MONSTER_KILLS_PLAYER_INPUT = "monster-kills-player-input";
     public static final String PLAYER_ESCAPES_WITHOUT_FIGHTING_INPUT = "player-escapes-without-fighting-input";
@@ -48,12 +48,12 @@ public class DungeonTest {
 
     private void writeScenarioIteration(int i, String scenarioName) throws URISyntaxException, IOException {
         systemOutRule.clearLog();
-        Dungeon.setRandom(new Random(i));
-        Dungeon.setInputFile(inputFileOf(scenarioName));
+        DungeonRunner.setRandom(new Random(i));
+        DungeonRunner.setInputFile(inputFileOf(scenarioName));
         File goldenMasterFile = new File(GOLDEN_MASTER_STORAGE_DIRECTORY + scenarioName + i);
         reinitGoldenMasterFile(goldenMasterFile);
         try (FileWriter testFileWriter = new FileWriter(goldenMasterFile)) {
-            Dungeon.main(new String[0]);
+            DungeonRunner.main(new String[0]);
             testFileWriter.append(systemOutRule.getLog());
         }
     }
@@ -65,11 +65,11 @@ public class DungeonTest {
 
     private void assertScenarioIteration(int i, String scenarioName) throws URISyntaxException, IOException {
         systemOutRule.clearLog();
-        Dungeon.setRandom(new Random(i));
-        Dungeon.setInputFile(inputFileOf(scenarioName));
+        DungeonRunner.setRandom(new Random(i));
+        DungeonRunner.setInputFile(inputFileOf(scenarioName));
         String testFileContent = new String(Files.readAllBytes(Paths.get(GOLDEN_MASTER_STORAGE_DIRECTORY + scenarioName + i)));
 
-        Dungeon.main(new String[0]);
+        DungeonRunner.main(new String[0]);
 
         assertThat(systemOutRule.getLog()).isEqualTo(testFileContent);
     }
