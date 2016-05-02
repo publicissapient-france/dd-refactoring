@@ -220,7 +220,6 @@ class Dungeon {
     public static void main(String[] args) {
         Random random = new Random();
         StringBuilder asciiArt = new StringBuilder();
-        System.out.print("seed - nothing for pure random> ");
         try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("dungeon as ascii art:");
             String currentLine;
