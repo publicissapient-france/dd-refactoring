@@ -32,7 +32,6 @@ public class DungeonTest {
     @Ignore
     public void golden_ticket_generator() throws Exception {
         for (int i = 0; i < 1000; i++) {
-            Dungeon.setRandom(new Random(i));
             writeScenarioIteration(i, MONSTER_KILLS_PLAYER_INPUT);
             writeScenarioIteration(i, PLAYER_ESCAPES_WITHOUT_FIGHTING_INPUT);
             writeScenarioIteration(i, PLAYER_KILLS_MONSTER_INPUT);
@@ -49,12 +48,12 @@ public class DungeonTest {
     }
 
     private void writeScenarioIteration(int i, String scenarioName) throws URISyntaxException, IOException {
-        File inputFile = inputFileOf(scenarioName);
-        Dungeon.setInputFile(inputFile);
+        systemOutRule.clearLog();
+        Dungeon.setRandom(new Random(i));
+        Dungeon.setInputFile(inputFileOf(scenarioName));
         File goldenTicketFile = new File(GOLDEN_TICKET_STORAGE_DIRECTORY + scenarioName + i);
         reinitGoldenTicketFile(goldenTicketFile);
         try (FileWriter testFileWriter = new FileWriter(goldenTicketFile)) {
-            systemOutRule.clearLog();
             Dungeon.main(new String[0]);
             testFileWriter.append(systemOutRule.getLog());
         }
@@ -68,8 +67,7 @@ public class DungeonTest {
     private void assertScenarioIteration(int i, String scenarioName) throws URISyntaxException, IOException {
         systemOutRule.clearLog();
         Dungeon.setRandom(new Random(i));
-        File inputFile = inputFileOf(scenarioName);
-        Dungeon.setInputFile(inputFile);
+        Dungeon.setInputFile(inputFileOf(scenarioName));
         String testFileContent = new String(Files.readAllBytes(Paths.get(GOLDEN_TICKET_STORAGE_DIRECTORY + scenarioName + i)));
 
         Dungeon.main(new String[0]);
