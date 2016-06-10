@@ -10,7 +10,6 @@ E         #
 Player moved down
 Player moved down
 Player moved down
-Player moved down
 Player moved right
 Player moved up
 Player moved down
@@ -28,7 +27,6 @@ Player moved up
 Player moved left
 Player moved left
 Player moved left
-Player moved up
 Player fight against monster
 Player hit monster with 14 damage.
 Monster survives and got 6 hp
