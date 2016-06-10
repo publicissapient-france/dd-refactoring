@@ -138,7 +138,7 @@ class Dungeon {
 
     Dungeon down() {
         return move("down",
-                () -> playerY < height,
+                () -> playerY < height - 1,
                 () -> playerY == height - 1 && "south".equals(exitDirection) && playerX == exitPosition,
                 () -> playerY++);
     }

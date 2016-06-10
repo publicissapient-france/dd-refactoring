@@ -110,11 +110,11 @@ public class ScenariiTest {
                 "E         #\n" +
                 "#         #\n" +
                 "###########\n" +
-                "Player moved down\nPlayer moved down\nPlayer moved down\nPlayer moved down\nPlayer moved right\n" +
-                "Player moved up\nPlayer moved down\nPlayer moved left\nPlayer moved up\nPlayer moved left\n" +
-                "Player moved right\nPlayer moved down\nPlayer moved left\nPlayer moved left\nPlayer moved left\n" +
-                "Player moved right\nPlayer moved up\nPlayer moved up\nPlayer moved left\nPlayer moved left\n" +
-                "Player moved left\nPlayer moved up\nPlayer fight against monster\n" +
+                "Player moved down\nPlayer moved down\nPlayer moved down\nPlayer moved right\nPlayer moved up\n" +
+                "Player moved down\nPlayer moved left\nPlayer moved up\nPlayer moved left\nPlayer moved right\n" +
+                "Player moved down\nPlayer moved left\nPlayer moved left\nPlayer moved left\nPlayer moved right\n" +
+                "Player moved up\nPlayer moved up\nPlayer moved left\nPlayer moved left\nPlayer moved left\n" +
+                "Player fight against monster\n" +
                 "Player hit monster with 14 damage.\n" +
                 "Monster survives and got 6 hp\n" +
                 "Monster hits Player with 8 damage.\n" +
